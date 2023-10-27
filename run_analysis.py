@@ -4,6 +4,7 @@ from datetime import datetime
 import math
 import requests
 import os
+from constants import GOOGLE_API_KEY_ID
 
 def load_isd_locations():
     ## Load isd station location data
@@ -20,7 +21,7 @@ def load_isd_locations():
 
 def get_city_geodata_via_geocoding_api(citi_name):
     ## Get geometry data via Google map API
-    gmaps = googlemaps.Client(key=f'{YOUR_KEY_ID}')
+    gmaps = googlemaps.Client(key=GOOGLE_API_KEY_ID)
     geocode_result = gmaps.geocode(citi_name)
     # print(geocode_result)
     return geocode_result
@@ -57,23 +58,25 @@ def haversine_distance(lat1, lon1, lat2, lon2):
 
     return distance
 
-def get_isd_data(stn_list):
+def get_isd_data(stn_list, data_year):
     ## Get ISD data of the closest station
     stn_USAF = stn_list.iloc[0]['USAF']
     stn_WBAN = stn_list.iloc[0]['WBAN']
+    print(stn_list)
 
-    isd_file_daily=f'https://www.ncei.noaa.gov/data/global-summary-of-the-day/access/2013/{stn_USAF}{stn_WBAN}.csv'
+    isd_file_daily=f'https://www.ncei.noaa.gov/data/global-summary-of-the-day/access/{data_year}/{stn_USAF}{stn_WBAN}.csv'
     response = requests.get(isd_file_daily)
-    open("instagram.ico", "wb").write(response.content)
+    open("isd_daily_data.csv", "wb").write(response.content)
 
-    file = "instagram.ico"
+    file = "isd_daily_data.csv"
     data = pd.read_csv(file, header=0)
     return data
 
 
 citi_name = 'Santo Domingo,Santo Domingo de los Tsachilas'
+data_year = 2013
 
 geocode_result = get_city_geodata_via_geocoding_api(citi_name)
 stn_list = get_closest_stns_in_isd_data(geocode_result)
-isd_data = get_isd_data(stn_list)
+isd_data = get_isd_data(stn_list, data_year)
 print(isd_data)
