@@ -25,6 +25,15 @@ This project is a tool to get weather information by enter a location name.
     git clone https://github.com/wishingwork/geo2weather.git
     cd geo2weather
 
+**Step 2: Update configuration variables with your account setting**
+
+- constants.py:  GOOGLE_API_KEY_ID
+
+**Step 3: Command to run the project:**
+
+    python run_analysis.py
+
+
 # Primary Components
 
 [(Back to top)](#table-of-contents)
