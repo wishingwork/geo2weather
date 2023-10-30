@@ -13,17 +13,13 @@ This project is a tool to get weather information by enter a location name.
 
 [(Back to top)](#table-of-contents)
 
-**Step 0: Prerequisites**
-
-- Create a conda environment to install necessary libraries:
-
-      conda install --yes --file requirements.txt
-
-**Step 1: Download project**
+**Step 1: Download project and create conda env**
 
     git init
     git clone https://github.com/wishingwork/geo2weather.git
     cd geo2weather
+    conda install --yes --file requirements.txt    
+    
 
 **Step 2: Update configuration variables with your account setting**
 
