@@ -8,15 +8,8 @@ from constants import GOOGLE_API_KEY_ID
 
 def load_isd_locations():
     ## Load isd station location data
-    file_path = './isd-stn-location.txt'
-
-    is_file_exist = os.path.isfile(file_path)
-    if is_file_exist is False:
-        isd_history='https://www.ncei.noaa.gov/pub/data/noaa/isd-history.txt'
-        response = requests.get(isd_history)
-        open("isd-stn-location.txt", "wb").write(response.content)
-
-    data = pd.read_fwf(file_path, skiprows=20)
+    isd_history='https://www.ncei.noaa.gov/pub/data/noaa/isd-history.txt'
+    data = pd.read_fwf(isd_history, skiprows=20)
     return data
 
 def get_city_geodata_via_geocoding_api(citi_name):
