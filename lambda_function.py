@@ -58,20 +58,18 @@ def get_isd_data(stn_list, data_year):
     print(stn_list)
 
     isd_file_daily=f'https://www.ncei.noaa.gov/data/global-summary-of-the-day/access/{data_year}/{stn_USAF}{stn_WBAN}.csv'
-    response = requests.get(isd_file_daily)
-    open("isd_daily_data.csv", "wb").write(response.content)
-
-    file = "isd_daily_data.csv"
-    data = pd.read_csv(file, header=0)
+    data = pd.read_csv(isd_file_daily, header=0)
     return data
 
 def lambda_handler(event, context):
-    citi_name = 'Santo Domingo,Santo Domingo de los Tsachilas'
     data_year = 2013
-    # print('Please enter a city:')
-    citi_name = 'taipei'
+    if event is not None:
+        citi_name = event['cityName']
+    else:
+        citi_name = 'taipei'    
+
     geocode_result = get_city_geodata_via_geocoding_api(citi_name)
-    # stn_list = get_closest_stns_in_isd_data(geocode_result)
-    # isd_data = get_isd_data(stn_list, data_year)
-    # print(isd_data)
-    print(geocode_result)
+    stn_list = get_closest_stns_in_isd_data(geocode_result)
+    isd_data = get_isd_data(stn_list, data_year)
+
+    return isd_data['TEMP'].to_json()
